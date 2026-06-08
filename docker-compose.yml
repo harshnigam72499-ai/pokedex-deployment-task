@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pokedex-app:v1
+    container_name: pokedex-app
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: pokedex-nginx
+    depends_on:
+      - app
+    ports:
+      - "8091:80"
+      - "8092:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
